@@ -32,7 +32,8 @@ public class ApplicantsService {
         if(user == null){
             throw new IllegalArgumentException("로그인이 필요합니다");
         }
-        applicantsRepository.deleteById(applicantsRequestDto.getUser().getId());
+        applicantsRequestDto.setUser(user);
+        applicantsRepository.deleteById(user.getId());
         return new ResponseDto("신청 취소 완료!", HttpStatus.OK.value()); // DB에 정상적으로 저장 되었을 경우 결과 리턴
     }
 

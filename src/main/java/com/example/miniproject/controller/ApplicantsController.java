@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController // @Controller 어노테이션은 html을 반환하기 때문에 RestController를 사용함
 @RequiredArgsConstructor
-@RequestMapping("/users")
 public class ApplicantsController {
 
     private final ApplicantsService applicantsService;
