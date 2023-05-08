@@ -21,25 +21,18 @@ public class UserController {
 
 
 
-    @PostMapping("/signup")
-    public ResponseDto signup(@RequestBody SignupRequestDto signupRequestDto ) {
-        try {
-            return userService.signup(signupRequestDto);
-        } catch (Exception e) {
-            return new ResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());                         // 예외 발생시 에러 내용, Httpstatus(400)을 리턴값으로 전달한다.
-        }
-
+   @PostMapping("/signup")
+    public ResponseEntity<ResponseDto> signup(
+            @RequestBody @Valid SignupRequestDto signupRequestDto) {
+        return ResponseEntity.ok().body(userService.signup(signupRequestDto));
     }
 
-    @ResponseBody
+
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        try {
-            return userService.login(loginRequestDto, response);
-        } catch (Exception e) {
-            return new ResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value());                         // 예외 발생시 에러 내용, Httpstatus(400)을 리턴값으로 전달한다.
-        }
+    public ResponseEntity<ResponseDto> login(
+            @RequestBody LoginRequestDto loginRequestDto,
+            HttpServletResponse response) {
+        return ResponseEntity.ok().body(userService.login(loginRequestDto, response));
     }
-
 }
 
