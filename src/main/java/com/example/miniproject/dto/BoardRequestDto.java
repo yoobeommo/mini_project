@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BoardRequestDto implements GeneralResponseDto{
     private Long id;
     private String type;
