@@ -15,16 +15,15 @@ public class Applicants extends Timestamped{
     @Column(name = "applicants_id")
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "board_id")
-//    private Board board;
+    @Column
+    private Long boardId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private User user;
 
     public Applicants(ApplicantsRequestDto requestDto) {
-//        this.board = requestDto.getBoard();
+        this.boardId = requestDto.getBoardId();
         this.user = requestDto.getUser();
     }
 }
