@@ -2,11 +2,13 @@ package com.example.miniproject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BoardRequestDto implements GeneralResponseDto{
     private Long id;
     private String type;
