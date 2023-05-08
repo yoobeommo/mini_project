@@ -20,9 +20,6 @@ public class BoardResponseDto implements GeneralResponseDto{
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<String> applicantsNicknames;
-//    private int applicantsCount;
-
-//    private List<CommentResponseDto> commentList;  //코멘트와 합치고 주석해제
 
     public BoardResponseDto(Board board){
         this.id = board.getId();
@@ -30,7 +27,6 @@ public class BoardResponseDto implements GeneralResponseDto{
         this.title = board.getTitle();
         this.date= board.getDate();
         this.totalMember= board.getTotalMember();
-//        this.memberNum = board.getMemberNum();
         this.contents=board.getContents();
         this.nickname= board.getNickname();
         this.createdAt = board.getCreatedAt();

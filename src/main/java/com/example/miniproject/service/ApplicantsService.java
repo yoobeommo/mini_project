@@ -22,19 +22,17 @@ public class ApplicantsService {
     @Transactional
     public GeneralResponseDto addApplicants(Board board, User user) {
         try {
+            if (board.getMemberNum() >= board.getTotalMember()) {
+                return new StatusResponseDto("참여 인원이 꽉 찼습니다.", HttpStatus.BAD_REQUEST);
+            }
+
             Applicants applicants = new Applicants(board, user);
             applicantsRepository.save(applicants);
+            board.setMemberNum(board.getMemberNum() + 1);
             return new StatusResponseDto("신청이 완료되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return new StatusResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-//        if(user == null){
-//            throw new IllegalArgumentException("로그인이 필요합니다");
-//        }
-//        applicantsRequestDto.setUser(user);
-//        Applicants applicants = new Applicants(applicantsRequestDto);
-//        applicantsRepository.save(applicants);
-//        return new ResponseDto("신청 완료!", HttpStatus.OK.value()); // DB에 정상적으로 저장 되었을 경우 결과 리턴
     }
 
     @Transactional
