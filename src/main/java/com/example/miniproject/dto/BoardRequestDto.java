@@ -1,14 +1,25 @@
 package com.example.miniproject.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
-public class BoardRequestDto {
+@AllArgsConstructor
+public class BoardRequestDto implements GeneralResponseDto{
     private Long id;
-    private String type; // type이 버튼누르면 선택되는 형식인데, String?
+    private String type;
     private String title;
     private String date;
     private int memberNum;
     private int totalMember;
     private String contents;
+    private String nickname;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

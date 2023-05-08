@@ -2,17 +2,27 @@ package com.example.miniproject.service;
 
 import com.example.miniproject.dto.BoardRequestDto;
 import com.example.miniproject.dto.BoardResponseDto;
+import com.example.miniproject.dto.GeneralResponseDto;
+import com.example.miniproject.dto.StatusResponseDto;
 import com.example.miniproject.entity.Board;
 import com.example.miniproject.entity.User;
+import com.example.miniproject.entity.UserRoleEnum;
 import com.example.miniproject.jwt.JwtUtil;
 import com.example.miniproject.repository.BoardRepository;
 import com.example.miniproject.repository.UserRepository;
 import com.example.miniproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BoardService {
 
@@ -22,12 +32,53 @@ public class BoardService {
 
     //create
     @Transactional
-    public BoardResponseDto createBoard(BoardRequestDto requestDto, UserDetailsImpl userDetails) {
+    public GeneralResponseDto createBoard(BoardRequestDto requestDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
+        requestDto.setNickname(user.getNickname());
         Board board = new Board(requestDto);
         board.setUser(user);
         boardRepository.save(board);
         return new BoardResponseDto(board);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardResponseDto> getAllBoards(){
+        List<BoardResponseDto> AllBoards = new ArrayList<>();
+        List<Board> BoardList = boardRepository.findAllByOrderByModifiedAtDesc();
+        for(Board board : BoardList) {
+            AllBoards.add(new BoardResponseDto(board));
+        }
+        return AllBoards;
+    }
+
+    public GeneralResponseDto getBoard(Long id){
+        try{
+            Board board = findBoardById(id);
+            return new BoardResponseDto(board);
+        }catch (NullPointerException e){
+            return new StatusResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    public GeneralResponseDto updateBoard(Long id, BoardRequestDto requestDto, UserDetailsImpl userDetails){
+        try{
+            Board board = findBoardById(id);
+
+            if (board.getUser().getUsername().equals(userDetails.getUsername())) {
+                board.update(requestDto);
+                return new BoardResponseDto(board);
+            }
+            return new StatusResponseDto("직접 작성한 게시글만 수정할 수 있습니다.",HttpStatus.BAD_REQUEST);
+        }catch(NullPointerException e){
+            return new StatusResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public Board findBoardById(Long id) throws NullPointerException{
+        return boardRepository.findById(id).orElseThrow(
+                ()-> new NullPointerException("존재하지 않는 게시글입니다.")
+        );
     }
 
 
