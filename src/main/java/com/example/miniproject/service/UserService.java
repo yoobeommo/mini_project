@@ -67,7 +67,7 @@ public class UserService {
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
-        System.out.println(response);
+
         return new ResponseDto("로그인 완료!", HttpStatus.OK.value());
     }
 }
