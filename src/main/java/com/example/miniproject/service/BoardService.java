@@ -6,7 +6,6 @@ import com.example.miniproject.dto.GeneralResponseDto;
 import com.example.miniproject.dto.StatusResponseDto;
 import com.example.miniproject.entity.Board;
 import com.example.miniproject.entity.User;
-import com.example.miniproject.entity.UserRoleEnum;
 import com.example.miniproject.jwt.JwtUtil;
 import com.example.miniproject.repository.BoardRepository;
 import com.example.miniproject.repository.UserRepository;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,7 +36,7 @@ public class BoardService {
         Board board = new Board(requestDto);
         board.setUser(user);
         boardRepository.save(board);
-//        return new BoardResponseDto(board);
+
         return new StatusResponseDto("작성완료", HttpStatus.OK);
     }
 
@@ -69,7 +67,7 @@ public class BoardService {
 
             if (board.getUser().getUsername().equals(userDetails.getUsername())) {
                 board.update(requestDto);
-//                return new BoardResponseDto(board);
+
                 return new StatusResponseDto("수정 완료", HttpStatus.OK);
             }
             return new StatusResponseDto("직접 작성한 게시글만 수정할 수 있습니다.",HttpStatus.BAD_REQUEST);

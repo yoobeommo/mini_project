@@ -2,10 +2,8 @@ package com.example.miniproject.dto;
 
 import com.example.miniproject.entity.Board;
 import lombok.Getter;
-import java.time.LocalDate;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class BoardResponseDto implements GeneralResponseDto{
@@ -19,7 +17,7 @@ public class BoardResponseDto implements GeneralResponseDto{
     private String nickname;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-//    LocalDate modifiedAt;
+
 //    private List<CommentResponseDto> commentList;  //코멘트와 합치고 주석해제
 
     public BoardResponseDto(Board board){
@@ -33,7 +31,7 @@ public class BoardResponseDto implements GeneralResponseDto{
         this.nickname= board.getNickname();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
-//        this.modifiedAt = board.getModifiedAt().toLocalDate();
+
     }
 
 }
