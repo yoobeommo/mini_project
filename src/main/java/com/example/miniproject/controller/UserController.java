@@ -7,10 +7,12 @@ import com.example.miniproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController // @Controller 어노테이션은 html을 반환하기 때문에 RestController를 사용함
 @RequiredArgsConstructor
