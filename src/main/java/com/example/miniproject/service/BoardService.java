@@ -30,7 +30,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    //create
+
     @Transactional
     public GeneralResponseDto createBoard(BoardRequestDto requestDto, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
@@ -38,7 +38,8 @@ public class BoardService {
         Board board = new Board(requestDto);
         board.setUser(user);
         boardRepository.save(board);
-        return new BoardResponseDto(board);
+//        return new BoardResponseDto(board);
+        return new StatusResponseDto("작성완료", HttpStatus.OK);
     }
 
     @Transactional(readOnly = true)
@@ -51,6 +52,7 @@ public class BoardService {
         return AllBoards;
     }
 
+    @Transactional(readOnly = true)
     public GeneralResponseDto getBoard(Long id){
         try{
             Board board = findBoardById(id);
@@ -67,7 +69,8 @@ public class BoardService {
 
             if (board.getUser().getUsername().equals(userDetails.getUsername())) {
                 board.update(requestDto);
-                return new BoardResponseDto(board);
+//                return new BoardResponseDto(board);
+                return new StatusResponseDto("수정 완료", HttpStatus.OK);
             }
             return new StatusResponseDto("직접 작성한 게시글만 수정할 수 있습니다.",HttpStatus.BAD_REQUEST);
         }catch(NullPointerException e){
@@ -80,6 +83,22 @@ public class BoardService {
                 ()-> new NullPointerException("존재하지 않는 게시글입니다.")
         );
     }
+
+    @Transactional
+    public StatusResponseDto deleteBoard(Long id, UserDetailsImpl userDetails){
+        try {
+            Board board = findBoardById(id);
+            if (board.getUser().getUsername().equals(userDetails.getUsername())) {
+                boardRepository.delete(board);
+                return new StatusResponseDto("삭제완료", HttpStatus.OK);
+            }
+            return new StatusResponseDto("직접 작성한 게시글만 삭제할 수 있습니다.", HttpStatus.BAD_REQUEST);
+        }catch (NullPointerException e){
+            return new StatusResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 
 
 }
