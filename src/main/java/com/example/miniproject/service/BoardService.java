@@ -52,10 +52,15 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public GeneralResponseDto getBoard(Long id){
-        try{
+
+        try {
             Board board = findBoardById(id);
+
+            // 게시물 조회 시 지원자 정보를 추가로 조회
+            board.getApplicants().size(); // FetchType.LAZY로 인해 지원자 정보를 로드하기 위해 size() 메서드를 호출
+
             return new BoardResponseDto(board);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return new StatusResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

@@ -4,6 +4,8 @@ import com.example.miniproject.entity.Board;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class BoardResponseDto implements GeneralResponseDto{
@@ -17,6 +19,8 @@ public class BoardResponseDto implements GeneralResponseDto{
     private String nickname;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private List<String> applicantsNicknames;
+//    private int applicantsCount;
 
 //    private List<CommentResponseDto> commentList;  //코멘트와 합치고 주석해제
 
@@ -26,12 +30,14 @@ public class BoardResponseDto implements GeneralResponseDto{
         this.title = board.getTitle();
         this.date= board.getDate();
         this.totalMember= board.getTotalMember();
-        this.memberNum = board.getMemberNum();
+//        this.memberNum = board.getMemberNum();
         this.contents=board.getContents();
         this.nickname= board.getNickname();
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
-
+        this.applicantsNicknames = board.getApplicants().stream()
+                .map(applicant -> applicant.getUser().getNickname())
+                .collect(Collectors.toList());
+        this.memberNum = this.applicantsNicknames.size();
     }
-
 }

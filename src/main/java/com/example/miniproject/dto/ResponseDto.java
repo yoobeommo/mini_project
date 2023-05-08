@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ResponseDto {
+public class ResponseDto implements GeneralResponseDto{
     private String msg;
     private int statusCode;
 
