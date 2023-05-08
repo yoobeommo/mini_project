@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -43,6 +45,14 @@ public class Board extends Timestamped {
     @JoinColumn
     private User user;
 
+    // 1:N 연관관계 설정
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Applicants> applicants = new ArrayList<>();
+
+    // Getter를 수정하여 실시간으로 참가자 수를 계산
+    public int getMemberNum() {
+        return applicants.size();
+    }
 
     public Board(BoardRequestDto requestDto) {
         this.type = requestDto.getType();
@@ -62,5 +72,4 @@ public class Board extends Timestamped {
         this.totalMember = requestDto.getTotalMember();
         this.contents = requestDto.getContents();
     }
-
 }
